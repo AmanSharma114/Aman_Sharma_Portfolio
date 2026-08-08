@@ -27,9 +27,62 @@ This is my portfolio as a **2+ year Data Engineer working across data infrastruc
 
 The site is built to make one thing legible in under fifteen seconds: I'm not "a Data Engineer" or "an AI Engineer" — I'm the person who can explain why your retrieval system is misbehaving by pointing at the ingestion layer underneath it.
 
-<p align="center">
-  <img src="docs/site-structure.svg" alt="Single-page scroll structure: Hero, Why Hire Me, Systems, Journey, Contact" width="100%">
-</p>
+<svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#67e9fa"/>
+      <stop offset="45%" stop-color="#846dff"/>
+      <stop offset="100%" stop-color="#ff8dca"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="980" height="300" fill="#070812" rx="10"/>
+
+  <!-- flow line -->
+  <line x1="60" y1="150" x2="920" y2="150" stroke="#292a3e" stroke-width="2"/>
+  <line x1="60" y1="150" x2="920" y2="150" stroke="url(#accent)" stroke-width="2" stroke-dasharray="4 5" opacity="0.55"/>
+
+  <!-- nodes -->
+  <g>
+    <!-- 1 Hero -->
+    <rect x="30" y="110" width="150" height="80" rx="8" fill="#101120" stroke="#292a3e"/>
+    <circle cx="105" cy="130" r="4" fill="#67e9fa"/>
+    <text x="105" y="155" fill="#f7f6fb" font-size="13" text-anchor="middle" font-weight="600">Hero</text>
+    <text x="105" y="172" fill="#aaa9bb" font-size="10" text-anchor="middle">Positioning + flow SVGs</text>
+
+    <!-- 2 Why hire -->
+    <rect x="210" y="110" width="150" height="80" rx="8" fill="#101120" stroke="#292a3e"/>
+    <circle cx="285" cy="130" r="4" fill="#846dff"/>
+    <text x="285" y="155" fill="#f7f6fb" font-size="13" text-anchor="middle" font-weight="600">Why Hire Me</text>
+    <text x="285" y="172" fill="#aaa9bb" font-size="10" text-anchor="middle">3 proof cards</text>
+
+    <!-- 3 Systems -->
+    <rect x="390" y="110" width="150" height="80" rx="8" fill="#101120" stroke="#292a3e"/>
+    <circle cx="465" cy="130" r="4" fill="#ff8dca"/>
+    <text x="465" y="150" fill="#f7f6fb" font-size="13" text-anchor="middle" font-weight="600">Systems</text>
+    <text x="465" y="165" fill="#aaa9bb" font-size="10" text-anchor="middle">Case studies +</text>
+    <text x="465" y="178" fill="#aaa9bb" font-size="10" text-anchor="middle">toolkit</text>
+
+    <!-- 4 Journey -->
+    <rect x="570" y="110" width="150" height="80" rx="8" fill="#101120" stroke="#292a3e"/>
+    <circle cx="645" cy="130" r="4" fill="#dcff72"/>
+    <text x="645" y="155" fill="#f7f6fb" font-size="13" text-anchor="middle" font-weight="600">Journey</text>
+    <text x="645" y="172" fill="#aaa9bb" font-size="10" text-anchor="middle">Roles + proof + voices</text>
+
+    <!-- 5 Contact -->
+    <rect x="750" y="110" width="150" height="80" rx="8" fill="#101120" stroke="#292a3e"/>
+    <circle cx="825" cy="130" r="4" fill="#67e9fa"/>
+    <text x="825" y="155" fill="#f7f6fb" font-size="13" text-anchor="middle" font-weight="600">Contact</text>
+    <text x="825" y="172" fill="#aaa9bb" font-size="10" text-anchor="middle">Résumé + networks</text>
+  </g>
+
+  <!-- top label -->
+  <text x="490" y="45" fill="#f7f6fb" font-size="15" text-anchor="middle" font-weight="700" letter-spacing="0.02em">SINGLE-PAGE SCROLL STRUCTURE</text>
+  <text x="490" y="66" fill="#67e9fa" font-size="10" text-anchor="middle" letter-spacing="0.12em">HERO → PROOF → SYSTEMS → JOURNEY → CONTACT</text>
+
+  <!-- bottom caption -->
+  <text x="490 " y="245" fill="#aaa9bb" font-size="10" text-anchor="middle">Static HTML · external CSS/JS · no build step · no framework</text>
+</svg>
 
 ## What's inside
 
