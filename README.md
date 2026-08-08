@@ -27,6 +27,7 @@ This is my portfolio as a **2+ year Data Engineer working across data infrastruc
 
 The site is built to make one thing legible in under fifteen seconds: I'm not "a Data Engineer" or "an AI Engineer" — I'm the person who can explain why your retrieval system is misbehaving by pointing at the ingestion layer underneath it.
 
+<img width="300" height="92" alt="site-structure" src="https://github.com/user-attachments/assets/ffa3ff18-ad61-4740-a00c-1a9460abac0a" />
 <svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">
   <defs>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
@@ -83,6 +84,7 @@ The site is built to make one thing legible in under fifteen seconds: I'm not "a
   <!-- bottom caption -->
   <text x="490 " y="245" fill="#aaa9bb" font-size="10" text-anchor="middle">Static HTML · external CSS/JS · no build step · no framework</text>
 </svg>
+
 
 ## What's inside
 
