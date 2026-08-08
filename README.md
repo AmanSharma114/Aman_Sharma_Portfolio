@@ -2,328 +2,102 @@
 
 ### Production Data Engineer × AI Systems Builder
 
-> **Build the data layer. Earn trust in the intelligence layer.**
+<div align="center">
 
-I'm a **Data Engineer at Tata Consultancy Services** building production data systems while specializing in **AI/GenAI engineering**.
+**Data systems that don't blink. AI systems that don't guess.**
 
-My edge is the combination of both — building reliable data foundations and intelligent systems on top of them.
+Production Data Engineer building the pipelines underneath, and the AI systems on top —
+positioned as a Bridge Engineer who works across that boundary instead of on one side of it.
 
-* ⚙️ **Data Engineering** — ETL, PySpark, SQL, AWS Glue, S3, PostgreSQL
-* 🧠 **AI Engineering** — RAG, hybrid retrieval, agents, reranking, MCP
-* ☁️ **Cloud** — AWS-native data and application architectures
-* 🛡️ **Production Thinking** — validation, idempotency, citations, HITL and failure handling
+[**Live site →**](https://amansharmamudgal.netlify.app) · [LinkedIn](https://www.linkedin.com/in/amansharma114) · [GitHub](https://github.com/AmanSharma114) · [LeetCode](https://leetcode.com/u/Aman_Sharma114/)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![No framework](https://img.shields.io/badge/framework-none-6E56CF?style=flat-square)
+![Deployed on Netlify](https://img.shields.io/badge/deployed-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)
+
+</div>
 
 ---
 
-## 🧩 The Bridge Engineer
+## About this site
 
-Most engineers specialize in either **data** or **AI**.
+This is my portfolio as a **2+ year Data Engineer working across data infrastructure and applied AI systems** — currently building a pharma ETL pipeline (Airflow, AWS Glue, Aurora PostgreSQL) at TCS, alongside personal projects in retrieval-augmented generation, agentic tool use, and human-in-the-loop AI safety.
 
-I work across both.
+The site is built to make one thing legible in under fifteen seconds: I'm not "a Data Engineer" or "an AI Engineer" — I'm the person who can explain why your retrieval system is misbehaving by pointing at the ingestion layer underneath it.
 
-```text
-                 ┌──────────────────────────┐
-                 │       AI SYSTEMS         │
-                 │                          │
-                 │  RAG · Agents · LLMs    │
-                 │  Hybrid Retrieval       │
-                 │  Reranking · MCP        │
-                 │  HITL · Evaluation      │
-                 └────────────┬─────────────┘
-                              │
-                       Evidence + Context
-                              │
-                 ┌────────────▼─────────────┐
-                 │     DATA FOUNDATION      │
-                 │                          │
-                 │  AWS Glue · PySpark      │
-                 │  S3 · SQL · PostgreSQL   │
-                 │  ETL · Validation       │
-                 │  Partitioning · SCD2     │
-                 └──────────────────────────┘
+<p align="center">
+  <img src="docs/site-structure.svg" alt="Single-page scroll structure: Hero, Why Hire Me, Systems, Journey, Contact" width="100%">
+</p>
+
+## What's inside
+
+| Section | What it covers |
+|---|---|
+| **Hero** | Positioning statement + two animated system-flow diagrams (data pipeline / AI retrieval) proving the "two operating layers" claim visually |
+| **Why hire me** | Three proof cards: reliability, systems thinking, and the Bridge Engineer framing |
+| **Systems** | Case studies — a production pharma data platform, LegalMind (Legal-BERT + Pinecone + LangGraph ReAct + human escalation), a YouTube trending-data ETL pipeline, a YouTube RAG chatbot, and an Enterprise AI Support Copilot |
+| **Toolkit** | Technical depth organized by outcome, not just a tag cloud — data foundations, cloud orchestration, grounded AI systems |
+| **Journey** | Real production roles (TCS, Chegg), not side-project padding |
+| **Proof & foundation** | Competitive programming rankings and 700+ solved problems as evidence of fundamentals |
+| **Voices** | An auto-advancing testimonial carousel — currently draft copy grounded in real project outcomes, clearly marked pending named attribution until real quotes replace them |
+| **Shipped archive** | Smaller side projects, linked out rather than given full case-study treatment |
+| **Contact** | Direct résumé request + every network link in one place |
+
+## Engineering notes
+
+This isn't a template — it's hand-built and hardened as a production artifact, not just a demo:
+
+- **Zero framework, zero build step.** Vanilla HTML/CSS/JS, deployable by uploading the folder as-is.
+- **Every interaction respects `prefers-reduced-motion`** — the hero parallax, the typing-quote animation, the cursor-tracked spotlight glow, and the testimonial carousel's auto-advance all degrade to a static, fully-readable state instead of just disabling motion superficially.
+- **The hero portrait ships as WebP with a JPEG fallback** via `<picture>`, marked `fetchpriority="high"` and preloaded, since it's the page's largest contentful paint element.
+- **Full landmark navigation** — every major section carries `aria-labelledby` pointing at its own heading, so screen-reader users get a real region menu, not just a wall of `<div>`s.
+- **The stylesheet is dead-code-audited**, not just written once and left — every rule was cross-checked against the classes actually present in the markup *and* the classes the JavaScript creates or toggles at runtime, so nothing unreachable ships to production.
+
+## Design language
+
+Dark, editorial, technical — not a SaaS-template dark mode.
+
+| Token | Value | Used for |
+|---|---|---|
+| `--bg` | `#070812` | Base background |
+| `--panel` | `#101120` | Card surfaces |
+| `--v` (violet) | `#846dff` | Primary accent |
+| `--c` (cyan) | `#67e9fa` | Secondary accent |
+| `--g` (lime) | `#dcff72` | Call-to-action, status |
+| `--pink` | `#ff8dca` | Tertiary accent |
+
+Typography: **Bricolage Grotesque** for the hero display type, **Inter** for body copy, and a monospace stack for labels, tags, and system-status text — reinforcing the "engineering console" feel without tipping into gimmick.
+
+## Project structure
+
+```
+index.html                          Semantic HTML, no inline styles or scripts
+css/styles.css                      Single stylesheet, organized into commented sections
+js/main.js                          Hero interactions + testimonial carousel, vanilla JS
+assets/aman-sharma-portrait.jpg     Hero portrait (fallback)
+assets/aman-sharma-portrait.webp    Hero portrait (primary, ~50% smaller)
+docs/site-structure.svg             The diagram above
 ```
 
-> The goal isn't simply to make an LLM respond.
-> **The goal is to make the system reliable enough to trust.**
+## Running locally
 
----
+No build step, no dependencies:
 
-## 🚀 What I Build
-
-### Data Engineering
-
-* AWS Glue ETL pipelines
-* PySpark transformations
-* S3-based data architectures
-* SQL & PL/pgSQL
-* Aurora PostgreSQL
-* Incremental processing
-* Data validation & quality checks
-* SCD Type 2
-* Idempotent reprocessing
-* Partitioning & performance optimization
-* Airflow / AWS-native orchestration
-
-### AI Engineering
-
-* Retrieval-Augmented Generation (RAG)
-* Hybrid retrieval — BM25 + dense vectors
-* Cross-encoder reranking
-* LangChain & LangGraph
-* Agentic workflows
-* MCP tool execution
-* FastAPI AI services
-* Human-in-the-loop systems
-* Citation-grounded responses
-* LLM evaluation & regression testing
-
-### Cloud & Infrastructure
-
-* AWS Glue
-* Amazon S3
-* Amazon Aurora PostgreSQL
-* AWS Lambda
-* Amazon Athena
-* AWS Step Functions
-* Amazon EventBridge
-* Amazon SNS
-* Amazon CloudWatch
-* Docker
-
----
-
-# 🏗️ Selected Systems
-
-## 🤖 Enterprise AI Support Copilot
-
-**Enterprise AI / Multi-Agent**
-
-An AI support assistant that classifies incidents, retrieves relevant evidence and historical incidents, and produces a **cited root-cause recommendation**.
-
-### Architecture
-
-```text
-Incoming Incident
-       │
-       ▼
-LangGraph Classifier
-       │
-       ▼
-Hybrid Retrieval
- ┌─────┴─────┐
- │           │
-BM25     Dense Vectors
- │           │
- └─────┬─────┘
-       ▼
-Cross-Encoder Reranker
-       │
-       ▼
-Synthesis Agent
-       │
-       ▼
-Confidence / HITL Gate
-   ┌───┴────┐
-   │        │
- Cite    Escalate
+```bash
+git clone https://github.com/AmanSharma114/<repo-name>.git
+cd <repo-name>
+python3 -m http.server 8000
+# open http://localhost:8000
 ```
 
-### Highlights
+Or open `index.html` directly in a browser — everything (fonts aside) works offline.
 
-* Hybrid BM25 + dense retrieval
-* Cross-encoder reranking
-* LangGraph orchestration
-* MCP-based diagnostics
-* Human-in-the-loop safety gates
-* Citation-backed recommendations
-* ~35% better recall than a vector-only baseline on the evaluated sample
+## Deploying
 
-**Stack:** `LangGraph` `RAG` `BM25` `Vector Search` `MCP` `FastAPI` `HITL`
+Drag-and-drop the folder into Netlify, or connect the repo for continuous deployment. No build command, no environment variables, no framework config needed.
 
----
-
-# ⚖️ LegalMind — Indian Legal AI Agent
-
-A source-grounded legal AI system designed to reduce hallucinated legal answers and unsupported citations.
-
-### Architecture
-
-```text
-User Query
-    │
-    ▼
-Legal-BERT Embeddings
-    │
-    ▼
-Pinecone Top-K Retrieval
-    │
-    ▼
-Context + Citation Tracking
-    │
-    ▼
-LangGraph ReAct Agent
- ┌──┼────────────────┐
- │  │                │
-Search  Summarise  Clause Extract
- │
- └──────────► HITL
-                 │
-                 ▼
-        FastAPI Streaming API
-                 │
-                 ▼
-              Streamlit
-```
-
-### Engineering Decisions
-
-* Legal-BERT for domain-specific semantic understanding
-* Pinecone for vector retrieval
-* Stateful reasoning through LangGraph
-* Citation-enforced responses
-* HITL escalation for uncertain answers
-* Manual QA across ambiguous and adversarial queries
-
-**Stack:** `Legal-BERT` `Pinecone` `LangGraph` `FastAPI` `Streamlit`
-
----
-
-# 🧬 Production Data Engineering
-
-At **Tata Consultancy Services**, I design and maintain AWS-based ETL systems processing **5–10 GB of regulated pharmaceutical data daily**.
-
-### Production Flow
-
-```text
-Third-Party Lab Data
-        │
-        ▼
-       S3
-        │
-        ▼
-AWS Glue + PySpark
- ├── Schema Validation
- ├── Deduplication
- ├── Transformation
- └── Data Quality
-        │
-        ▼
-PL/pgSQL + SCD Type 2
-        │
-        ▼
-Aurora PostgreSQL
-        │
-        ▼
-Athena / Analytics
-```
-
-### Impact
-
-| Metric                |                    Result |
-| --------------------- | ------------------------: |
-| Daily regulated data  |               **5–10 GB** |
-| Glue runtime          |       **42 min → ~6 min** |
-| Manual preparation    |        **~70% reduction** |
-| SQL / S3 optimization | **~25% faster execution** |
-| Records processed     |         **100K+ per run** |
-
-One optimization replaced a shuffle-heavy PySpark transformation with a **broadcast join**, reducing a Glue job from approximately **42 minutes to 6 minutes**.
-
----
-
-# 🛠️ Engineering Principles
-
-### Data Systems
-
-* **Idempotency** over accidental duplication
-* **Validation** before downstream consumption
-* **Explicit history** through SCD Type 2
-* **Partitioning** based on access patterns
-* **Safe reprocessing** without corrupting existing data
-
-### AI Systems
-
-* **Evidence over confidence**
-* **Retrieval before generation**
-* **Reranking before synthesis**
-* **Citations over unsupported claims**
-* **Human escalation when uncertainty matters**
-
----
-
-# 💻 Tech Stack
-
-### Languages
-
-`Python` `SQL` `PL/pgSQL` `Java`
-
-### Data Engineering
-
-`PySpark` `AWS Glue` `Apache Airflow` `ETL` `SCD Type 2`
-
-### AWS
-
-`S3` `Glue` `Aurora PostgreSQL` `Athena` `Lambda`
-`Step Functions` `EventBridge` `SNS` `CloudWatch`
-
-### AI / GenAI
-
-`RAG` `LangChain` `LangGraph` `Hybrid Search`
-`BM25` `Vector Search` `Cross-Encoder` `MCP` `LLM Agents`
-
-### AI Infrastructure
-
-`FastAPI` `Docker` `Pinecone` `FAISS` `Chroma` `Qdrant`
-
----
-
-# 📈 Experience
-
-### Data Engineer — Tata Consultancy Services
-
-**Nov 2024 — Present**
-
-* Design and maintain AWS Glue ETL pipelines processing **5–10 GB of regulated pharmaceutical data daily**
-* Built automated quality and incremental loading workflows, reducing manual preparation by **70%**
-* Optimized a shuffle-heavy PySpark transformation from **42 minutes to ~6 minutes**
-* Optimized SQL and S3 partitioning strategy, reducing execution time by **~25%**
-* Designed reliable data processing and reprocessing workflows
-
-### LLM Data Contributor — Shipd Datacurve
-
-**May 2024 — Nov 2024 · Part-time**
-
-* Authored **100+ DSA problems** for LLM training and benchmarking
-* Designed comprehensive test suites for model evaluation
-* Worked across algorithms, difficulty levels and edge cases
-
-### Subject Matter Expert — Chegg
-
-**Part-time**
-
-* Solved **100+ Computer Science questions**
-* Covered coding, DBMS, computer networks and related subjects
-
----
-
-# 🏆 Achievements
-
-* 🥇 **AIR 90 — CodeKaze 2023**
-* 🏅 **1st in college** among **100K+ participants**
-* 💻 **700+ DSA problems solved**
-* 🧠 Strong foundation in algorithms and computer science fundamentals
-
----
-
-# ☁️ Certification
-
-### AWS Certified Cloud Practitioner — CLF-C02
-
-Core areas:
-
-`S3` `IAM` `Athena` `Glue` `Lambda` `Cloud Security`
-
----
 
 # 🎯 What I'm Looking For
 
