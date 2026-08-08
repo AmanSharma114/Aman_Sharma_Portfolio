@@ -39,17 +39,6 @@ The site is built to make one thing legible in under fifteen seconds: I'm not "a
 
   <rect x="0" y="0" width="980" height="300" fill="#070812" rx="10"/>
 
-  <!-- flow line -->
-  <line x1="60" y1="150" x2="920" y2="150" stroke="#292a3e" stroke-width="2"/>
-  <line x1="60" y1="150" x2="920" y2="150" stroke="url(#accent)" stroke-width="2" stroke-dasharray="4 5" opacity="0.55"/>
-
-  <!-- top label -->
-  <text x="490" y="45" fill="#f7f6fb" font-size="15" text-anchor="middle" font-weight="700" letter-spacing="0.02em">SINGLE-PAGE SCROLL STRUCTURE</text>
-  <text x="490" y="66" fill="#67e9fa" font-size="10" text-anchor="middle" letter-spacing="0.12em">HERO → PROOF → SYSTEMS → JOURNEY → CONTACT</text>
-
-  <!-- bottom caption -->
-  <text x="490 " y="245" fill="#aaa9bb" font-size="10" text-anchor="middle">Static HTML · external CSS/JS · no build step · no framework</text>
-</svg>
 
 
 ## What's inside
