@@ -238,3 +238,33 @@
 
   restart();
 })();
+/* Compact navigation: keyboard dismissal and focus return. */
+(function siteNavigation() {
+  var toggle = document.querySelector('.menu-toggle');
+  var menu = document.getElementById('site-menu');
+  if (!toggle || !menu) return;
+  toggle.hidden = false;
+  document.querySelector('.site-nav').classList.add('has-menu-toggle');
+  function closeMenu() {
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('is-open');
+  }
+  toggle.addEventListener('click', function () {
+    var open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.classList.toggle('is-open', open);
+  });
+  menu.addEventListener('click', function (event) {
+    if (event.target.closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest('.site-nav')) closeMenu();
+  });
+  window.matchMedia('(min-width: 901px)').addEventListener('change', closeMenu);
+})();
