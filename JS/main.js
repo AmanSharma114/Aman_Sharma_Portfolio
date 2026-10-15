@@ -298,3 +298,40 @@
     observer.disconnect();
   });
 })();
+
+/* Mark the section being read and show progress through the portfolio. */
+(function readingNavigation() {
+  var links = Array.from(document.querySelectorAll('.site-links a[href^="#"]'));
+  var sections = links.map(function (link) { return document.querySelector(link.getAttribute('href')); });
+  var progress = document.querySelector('.reading-progress > span');
+  var header = document.querySelector('.navbox');
+  var scheduled = false;
+  function update() {
+    scheduled = false;
+    var readingLine = header.getBoundingClientRect().bottom + 100;
+    var active = null;
+    sections.forEach(function (section, index) {
+      if (!section) return;
+      var bounds = section.getBoundingClientRect();
+      if (bounds.top <= readingLine && bounds.bottom > readingLine) active = links[index];
+    });
+    links.forEach(function (link) {
+      if (link === active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    if (progress) {
+      var distance = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = 'scaleX(' + Math.min(1, Math.max(0, distance > 0 ? window.scrollY / distance : 0)) + ')';
+    }
+  }
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  window.addEventListener('load', schedule);
+  document.addEventListener('toggle', schedule, true);
+  update();
+})();
