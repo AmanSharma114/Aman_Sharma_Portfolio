@@ -987,15 +987,8 @@ summary:hover {
 }
 
 #case .head h2 {
-  font-size: 0;
-  max-width: 900px
-}
-
-#case .head h2:after {
-  content: "The engineering signal that matters before the interview.";
   font-size: clamp(2.55rem, 5vw, 5rem);
-  letter-spacing: -.08em;
-  line-height: .93
+  max-width: 900px
 }
 
 #case .head p {
@@ -1148,16 +1141,6 @@ summary:hover {
 .tool ul {
   padding-top: .9rem;
   border-top: 1px solid var(--line)
-}
-
-#journey .job:nth-child(2) time {
-  font-size: 0
-}
-
-#journey .job:nth-child(2) time:after {
-  content: "PART-TIME";
-  font: .64rem var(--mono);
-  color: var(--v)
 }
 
 .foot {

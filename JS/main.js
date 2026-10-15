@@ -1,243 +1,193 @@
 'use strict';
 
-/**
- * Aman Sharma — portfolio interactions
- *
- * All effects here are decorative and fully respect
- * prefers-reduced-motion. Nothing in this file is required for
- * content or navigation to work — if JS fails to load, the page
- * remains fully readable and usable.
- */
-
-/* ============================================================
-   HERO — portrait parallax on mouse move
-   ============================================================ */
-(function heroPhotoParallax() {
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return;
-
-  var hero = document.getElementById('top');
-  var photo = hero && hero.querySelector('.hero-v2-photo-wrap');
-  if (!hero || !photo) return;
-
-  photo.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)';
-
-  hero.addEventListener('mousemove', function (e) {
-    var r = hero.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width - 0.5;
-    var y = (e.clientY - r.top) / r.height - 0.5;
-    photo.style.transform = 'translate(' + (x * -14) + 'px,' + (y * -10) + 'px)';
-  });
-
-  hero.addEventListener('mouseleave', function () {
-    photo.style.transform = '';
-  });
-})();
-
-/* ============================================================
-   HERO — typing quote rotation + cursor-tracked spotlight glow
-   ============================================================ */
-(function heroQuoteAndSpotlight() {
+/* Hero effects respond immediately to motion preferences and tab visibility. */
+(function heroInteractions() {
   var hero = document.getElementById('top');
   if (!hero) return;
-
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var quoteEl = document.getElementById('heroQuoteType');
+  var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  var photo = hero.querySelector('.hero-v2-photo-wrap');
+  var spot = document.getElementById('heroSpotlight');
+  var quote = document.getElementById('heroQuoteType');
   var lines = [
-    'Pipelines that don\u2019t break at 3am are features, not coincidences.',
-    'Great AI starts with reliable data \u2014 I can work on both sides of that boundary.',
+    'Pipelines that don’t break at 3am are features, not coincidences.',
+    'Great AI starts with reliable data — I can work on both sides of that boundary.',
     'LLMs that make things up are a liability. I build the retrieval layer that makes them trustworthy.'
   ];
-
-  if (quoteEl) {
-    if (reduced) {
-      // Reduced motion: show the first line statically, no typing animation.
-      quoteEl.textContent = lines[0];
-    } else {
-      var li = 0;
-      var ci = 0;
-      var typing = true;
-      var pauseUntil = 0;
-      var TYPE_MS = 26;
-      var PAUSE_MS = 2200;
-      var FADE_MS = 260;
-
-      function tick() {
-        var now = Date.now();
-
-        if (!typing) {
-          if (now < pauseUntil) {
-            requestAnimationFrame(tick);
-            return;
-          }
-          quoteEl.style.transition = 'opacity ' + FADE_MS + 'ms ease';
-          quoteEl.style.opacity = '0';
-          setTimeout(function () {
-            li = (li + 1) % lines.length;
-            ci = 0;
-            typing = true;
-            quoteEl.textContent = '';
-            quoteEl.style.opacity = '1';
-            requestAnimationFrame(tick);
-          }, FADE_MS);
-          return;
-        }
-
-        var line = lines[li];
-        if (ci <= line.length) {
-          quoteEl.textContent = line.slice(0, ci);
-          ci++;
-          setTimeout(function () {
-            requestAnimationFrame(tick);
-          }, TYPE_MS);
-        } else {
-          typing = false;
-          pauseUntil = Date.now() + PAUSE_MS;
-          requestAnimationFrame(tick);
-        }
-      }
-
-      setTimeout(function () {
-        requestAnimationFrame(tick);
-      }, 1350);
-    }
+  var timer = null;
+  var line = 0;
+  var character = 0;
+  var frame = null;
+  var tx = 50, ty = 50, cx = 50, cy = 50;
+  function canAnimate() { return !motion.matches && !document.hidden; }
+  function nextQuote() {
+    if (!quote || !canAnimate()) return;
+    quote.style.opacity = '0';
+    timer = setTimeout(function () {
+      line = (line + 1) % lines.length;
+      character = 0;
+      quote.textContent = '';
+      quote.style.opacity = '1';
+      typeQuote();
+    }, 240);
   }
-
-  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var spot = document.getElementById('heroSpotlight');
-
-  if (spot && canHover && !reduced) {
-    var tx = 50;
-    var ty = 50;
-    var cx = 50;
-    var cy = 50;
-    var raf = null;
-
-    function loop() {
-      cx += (tx - cx) * 0.18;
-      cy += (ty - cy) * 0.18;
-      spot.style.setProperty('--sx', cx + '%');
-      spot.style.setProperty('--sy', cy + '%');
-      raf = requestAnimationFrame(loop);
-    }
-
-    hero.addEventListener('mousemove', function (e) {
-      var r = hero.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width) * 100;
-      ty = ((e.clientY - r.top) / r.height) * 100;
+  function typeQuote() {
+    if (!canAnimate()) return;
+    character++;
+    quote.textContent = lines[line].slice(0, character);
+    timer = setTimeout(character < lines[line].length ? typeQuote : nextQuote,
+      character < lines[line].length ? 26 : 6000);
+  }
+  function settleSpotlight() {
+    cx += (tx - cx) * .18;
+    cy += (ty - cy) * .18;
+    spot.style.setProperty('--sx', cx + '%');
+    spot.style.setProperty('--sy', cy + '%');
+    frame = Math.abs(tx - cx) + Math.abs(ty - cy) > .1 ? requestAnimationFrame(settleSpotlight) : null;
+  }
+  function resetPointer() {
+    if (photo) photo.style.transform = '';
+    if (spot) spot.classList.remove('is-active');
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
+  }
+  function reset() {
+    clearTimeout(timer);
+    resetPointer();
+    if (!quote) return;
+    if (motion.matches) line = 0;
+    quote.textContent = lines[line];
+    quote.style.opacity = '1';
+    quote.style.transition = 'opacity .24s ease';
+    if (canAnimate()) timer = setTimeout(nextQuote, 6000);
+  }
+  if (photo) photo.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)';
+  hero.addEventListener('mousemove', function (event) {
+    if (!canAnimate() || !pointer.matches) return;
+    var bounds = hero.getBoundingClientRect();
+    tx = (event.clientX - bounds.left) / bounds.width * 100;
+    ty = (event.clientY - bounds.top) / bounds.height * 100;
+    if (photo) photo.style.transform = 'translate(' + ((tx / 100 - .5) * -14) + 'px,' + ((ty / 100 - .5) * -10) + 'px)';
+    if (spot) {
       spot.classList.add('is-active');
-      if (!raf) loop();
-    });
-
-    hero.addEventListener('mouseleave', function () {
-      spot.classList.remove('is-active');
-      if (raf) {
-        cancelAnimationFrame(raf);
-        raf = null;
-      }
-    });
-  }
+      if (frame === null) frame = requestAnimationFrame(settleSpotlight);
+    }
+  });
+  hero.addEventListener('mouseleave', resetPointer);
+  motion.addEventListener('change', reset);
+  pointer.addEventListener('change', resetPointer);
+  document.addEventListener('visibilitychange', reset);
+  reset();
 })();
 
-/* ============================================================
-   TESTIMONIALS — "Voices" auto-advancing carousel
-   Dots + arrows are real <button> elements, so keyboard/tab
-   navigation works without extra handling. Auto-advance pauses
-   on hover, on tab-hidden, and is skipped entirely under
-   prefers-reduced-motion (the reader must navigate manually).
-   ============================================================ */
+/* Accessible carousel: manual controls, explicit pause and stable reading space. */
 (function voicesCarousel() {
   var stage = document.getElementById('voicesStage');
   var controls = document.getElementById('voicesControls');
   if (!stage || !controls) return;
-
-  var slides = stage.querySelectorAll('.voice-slide');
+  var slides = Array.from(stage.querySelectorAll('.voice-slide'));
+  if (!slides.length) return;
   var dotsWrap = document.getElementById('voicesDots');
   var progress = document.getElementById('voicesProgress');
-  var prevBtn = document.getElementById('voicesPrev');
-  var nextBtn = document.getElementById('voicesNext');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DURATION = 5000;
-  var idx = 0;
+  var pause = document.getElementById('voicesPause');
+  var status = document.getElementById('voicesStatus');
+  var section = document.getElementById('voices');
+  var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var duration = 18000;
+  var index = 0;
   var timer = null;
+  var progressFrame = null;
   var paused = false;
-
-  slides.forEach(function (_, i) {
-    var b = document.createElement('button');
-    b.className = 'voices-dot' + (i === 0 ? ' is-on' : '');
-    b.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
-    b.addEventListener('click', function () {
-      go(i);
-    });
-    dotsWrap.appendChild(b);
+  var hovered = false;
+  var focused = false;
+  var inView = !('IntersectionObserver' in window);
+  slides.forEach(function (slide, i) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'voices-dot' + (i === 0 ? ' is-on' : '');
+    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+    dot.setAttribute('aria-controls', slide.id);
+    dot.setAttribute('aria-pressed', String(i === 0));
+    dot.addEventListener('click', function () { go(i, true); });
+    dotsWrap.appendChild(dot);
   });
-
-  var dots = dotsWrap.querySelectorAll('.voices-dot');
-
-  function go(i) {
-    slides[idx].classList.remove('is-active');
-    dots[idx].classList.remove('is-on');
-    idx = (i + slides.length) % slides.length;
-    slides[idx].classList.add('is-active');
-    dots[idx].classList.add('is-on');
-    restart();
-  }
-
+  var dots = dotsWrap.querySelectorAll('button');
   function restart() {
-    clearInterval(timer);
-
-    if (reduced) {
-      progress.style.width = '0%';
-      return;
-    }
-
+    clearTimeout(timer);
+    if (progressFrame !== null) cancelAnimationFrame(progressFrame);
     progress.style.transition = 'none';
     progress.style.width = '0%';
-    requestAnimationFrame(function () {
-      progress.style.transition = 'width ' + DURATION + 'ms linear';
-      progress.style.width = paused ? '0%' : '100%';
+    pause.disabled = motion.matches;
+    pause.textContent = motion.matches ? 'Paused' : (paused ? 'Play' : 'Pause');
+    pause.setAttribute('aria-pressed', String(paused || motion.matches));
+    pause.setAttribute('aria-label', motion.matches ? 'Auto-play disabled for reduced motion' : (paused ? 'Play automatic testimonials' : 'Pause automatic testimonials'));
+    if (paused || hovered || focused || motion.matches || document.hidden || !inView) return;
+    progressFrame = requestAnimationFrame(function () {
+      progressFrame = null;
+      progress.style.transition = 'width ' + duration + 'ms linear';
+      progress.style.width = '100%';
     });
-
-    if (!paused) {
-      timer = setInterval(function () {
-        go(idx + 1);
-      }, DURATION);
-    }
+    timer = setTimeout(function () { go(index + 1, false); }, duration);
   }
-
-  prevBtn.addEventListener('click', function () {
-    go(idx - 1);
-  });
-
-  nextBtn.addEventListener('click', function () {
-    go(idx + 1);
-  });
-
-  if (!reduced) {
-    controls.parentElement.addEventListener('mouseenter', function () {
-      paused = true;
-      clearInterval(timer);
-      progress.style.transition = 'none';
+  function go(next, manual) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach(function (slide, i) {
+      slide.hidden = i !== index;
+      slide.classList.toggle('is-active', i === index);
+      dots[i].classList.toggle('is-on', i === index);
+      dots[i].setAttribute('aria-pressed', String(i === index));
     });
-
-    controls.parentElement.addEventListener('mouseleave', function () {
-      paused = false;
+    if (manual) status.textContent = 'Testimonial ' + (index + 1) + ' of ' + slides.length;
+    restart();
+  }
+  document.getElementById('voicesPrev').addEventListener('click', function () { go(index - 1, true); });
+  document.getElementById('voicesNext').addEventListener('click', function () { go(index + 1, true); });
+  pause.addEventListener('click', function () { paused = !paused; restart(); });
+  section.addEventListener('mouseenter', function () { hovered = true; restart(); });
+  section.addEventListener('mouseleave', function () { hovered = false; restart(); });
+  section.addEventListener('focusin', function () { focused = true; restart(); });
+  section.addEventListener('focusout', function (event) {
+    if (!section.contains(event.relatedTarget)) { focused = false; restart(); }
+  });
+  motion.addEventListener('change', restart);
+  document.addEventListener('visibilitychange', restart);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
       restart();
-    });
-
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) {
-        paused = true;
-        clearInterval(timer);
-      } else {
-        paused = false;
-        restart();
-      }
-    });
+    }, { threshold: .1 }).observe(section);
   }
-
-  restart();
+  // Measure hidden slides without exposing them to assistive technology.
+  var lastWidth = 0;
+  var lastFontSize = '';
+  function measure(force) {
+    var style = getComputedStyle(stage);
+    var width = stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    if (!force && width === lastWidth && style.fontSize === lastFontSize) return;
+    lastWidth = width;
+    lastFontSize = style.fontSize;
+    var tallest = 0;
+    slides.forEach(function (slide) {
+      var clone = slide.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.hidden = false;
+      clone.inert = true;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.style.cssText = 'position:absolute;inset:auto;visibility:hidden;display:block;width:' + width + 'px;height:auto;min-height:0;';
+      stage.appendChild(clone);
+      tallest = Math.max(tallest, clone.getBoundingClientRect().height);
+      clone.remove();
+    });
+    stage.style.minHeight = Math.ceil(tallest) + 'px';
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(function () { measure(false); }).observe(stage);
+  else window.addEventListener('resize', function () { measure(false); });
+  if (document.fonts) document.fonts.ready.then(function () { measure(true); });
+  controls.hidden = false;
+  measure(true);
+  go(0, false);
 })();
+
 /* Compact navigation: keyboard dismissal and focus return. */
 (function siteNavigation() {
   var toggle = document.querySelector('.menu-toggle');
@@ -255,7 +205,14 @@
     menu.classList.toggle('is-open', open);
   });
   menu.addEventListener('click', function (event) {
-    if (event.target.closest('a')) closeMenu();
+    var link = event.target.closest('a');
+    if (!link) return;
+    closeMenu();
+    var target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    }
   });
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
@@ -264,6 +221,9 @@
     }
   });
   document.addEventListener('click', function (event) {
+    if (!event.target.closest('.site-nav')) closeMenu();
+  });
+  document.addEventListener('focusin', function (event) {
     if (!event.target.closest('.site-nav')) closeMenu();
   });
   window.matchMedia('(min-width: 901px)').addEventListener('change', closeMenu);
@@ -306,6 +266,12 @@
   var progress = document.querySelector('.reading-progress > span');
   var header = document.querySelector('.navbox');
   var scheduled = false;
+  function updateHeaderOffset() {
+    document.documentElement.style.setProperty('--header-offset', Math.ceil(header.getBoundingClientRect().height + 20) + 'px');
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(updateHeaderOffset).observe(header);
+  else window.addEventListener('resize', updateHeaderOffset);
+  updateHeaderOffset();
   function update() {
     scheduled = false;
     var readingLine = header.getBoundingClientRect().bottom + 100;

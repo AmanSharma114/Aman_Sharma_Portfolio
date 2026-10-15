@@ -27,10 +27,8 @@ button { font-family: inherit; }
 .section { padding: clamp(4.5rem, 7vw, 6.5rem) 0; border-bottom-color: #ffffff0b; }
 .head { gap: 2.25rem; margin-bottom: 2.75rem; }
 .head > .ey { align-self: start; padding-top: .5rem; }
-.head h2 { font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.06; letter-spacing: -.055em; }
+.head h2, #case .head h2 { font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.06; letter-spacing: -.055em; }
 .head p { font-size: .98rem; line-height: 1.8; margin-bottom: 0; max-width: 620px; }
-#case .head h2::after { font-size: clamp(2.4rem, 4.6vw, 4.25rem); line-height: 1.06; letter-spacing: -.055em; }
-
 /* Editorial hero: a steady headline, softer portrait and clear controls. */
 .hero-v2 { background: #0a0d15; min-height: calc(100svh - 88px); }
 .hero-v2-wrap { padding: 4rem 0; }
@@ -181,7 +179,7 @@ button { font-family: inherit; }
   .hero-v2-quote { min-height: 4.5em; font-size: .86rem; }
   .hero-v2-eyebrow { font-size: .6rem; }
   .hero-v2-wrap { padding-top: 2rem; }
-  .head h2, #case .head h2::after { font-size: clamp(2.15rem, 9vw, 2.8rem); }
+  .head h2, #case .head h2 { font-size: clamp(2.15rem, 9vw, 2.8rem); }
   .section { padding: 4rem 0; }
   .head { margin-bottom: 2rem; }
   .head p { font-size: .92rem; }
@@ -368,7 +366,7 @@ html { scroll-padding-top: 130px; }
 
 /* Locally served display typography. */
 @font-face {
-  font-family: 'Portfolio Display';
+  font-family: 'Bricolage Grotesque';
   src: url('../assets/fonts/BricolageGrotesque-Display.woff') format('woff');
   font-weight: 200 800;
   font-style: normal;
@@ -382,7 +380,7 @@ html { scroll-padding-top: 130px; }
   width: 100%;
   max-width: min(600px, 52%);
   margin: 0 0 1.4rem;
-  font-family: 'Portfolio Display', 'Bricolage Grotesque', var(--sans);
+  font-family: 'Bricolage Grotesque', var(--sans);
   font-size: clamp(1.875rem, 3.9vw, 3.5rem);
   font-weight: 600;
   font-variation-settings: 'wght' 600;
@@ -438,3 +436,36 @@ html { scroll-padding-top: 130px; }
 @media(forced-colors: active) {
   .hero-title-emphasis--ai, .hero-title-stop { background: none; -webkit-text-fill-color: currentColor; }
 }
+
+/* Review fixes: reliable fallbacks, readable dates and accessible controls. */
+[hidden] { display: none !important; }
+html { scroll-padding-top: var(--header-offset, 165px); }
+.hero-v2-eyebrow, .hero-v2-quote, .hero-v2-intro,
+.hero-v2-actions-primary, .hero-v2-linkgroup { opacity: 1; animation: none; }
+.hero-v2-quote-cursor { display: none; }
+.job-dates { font: .68rem/1.6 var(--mono); color: #c1b4ff; }
+#journey .job-dates time { font: inherit; color: inherit; }
+.voices-controls { flex-wrap: wrap; gap: .75rem; }
+.voices-arrows { align-items: center; }
+.voices-pause { min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 22px; background: #ffffff04; color: var(--text); font-size: .75rem; cursor: pointer; }
+.voices-pause:hover, .voices-pause:focus-visible { border-color: var(--c); }
+.voices-pause:disabled { color: var(--muted); cursor: default; }
+.voice-slide .voice-pending { padding: .2rem .5rem; margin: .4rem 0 0 .4rem; font-size: .55rem; }
+.tool li::before { content: '+'; }
+#main:focus, section[tabindex='-1']:focus { outline: none; }
+@media(max-width: 360px) {
+  .voices-controls { gap: .5rem; }
+  .voices-dots { gap: .1rem; }
+  .voices-arrows { gap: .3rem; }
+  .voices-pause { padding: .5rem .65rem; }
+}
+/* Display lettering needs a little breathing room when the font is locally loaded. */
+.head h2, #case .head h2 { letter-spacing: -.035em; }
+.case h3, #case .hire-card h3, .tool h3, .voices-h2, .contact h2, .footer-name { letter-spacing: -.025em; }
+/* Reflow enlarged text rather than clipping it inside cards and the hero. */
+:where(h1, h2, h3, .award b) { overflow-wrap: anywhere; }
+.hero-title-promise { white-space: normal; }
+:where(.hire, .work-grid, .toolkit, .credentials, .recognition, .archive) > * { min-width: 0; }
+.hero-v2-resumes .resume-pill { flex: 1 1 8.5rem; min-width: 0; }
+.resume-pill-text { min-width: 0; overflow-wrap: anywhere; }
+.ngflow-head { flex-wrap: wrap; gap: .5rem; }
