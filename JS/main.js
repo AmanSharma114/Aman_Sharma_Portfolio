@@ -268,3 +268,33 @@
   });
   window.matchMedia('(min-width: 901px)').addEventListener('change', closeMenu);
 })();
+
+/* Animate visible content once; content never depends on animation to appear. */
+(function sectionEntrances() {
+  if (!('IntersectionObserver' in window) || !Element.prototype.animate) return;
+  var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (motion.matches) return;
+  var running = new Set();
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      if (motion.matches) return;
+      var animation = entry.target.animate([
+        { opacity: .35, transform: 'translateY(12px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], { duration: 450, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      running.add(animation);
+      animation.onfinish = function () { running.delete(animation); };
+    });
+  }, { threshold: .08 });
+  document.querySelectorAll('.head, .ngflow, .metric, .hire-card, .case, .tool, .job, .cred, .award, .mini, .voices-head').forEach(function (element) {
+    observer.observe(element);
+  });
+  motion.addEventListener('change', function () {
+    if (!motion.matches) return;
+    running.forEach(function (animation) { animation.cancel(); });
+    running.clear();
+    observer.disconnect();
+  });
+})();
